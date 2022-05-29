@@ -111,7 +111,7 @@ You may want to assign jobs to users manually, you can do it as follows.
 ```python
 from annotation.utils.job import assign
 
-# assign 20 abstracts to user with uid 0
+# assign 10 abstracts to user with uid 0
 assign(uid=1, job_size=10, job_type=0)
 ```
 
