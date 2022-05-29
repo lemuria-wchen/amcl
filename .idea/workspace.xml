@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d9cb649c-e951-4af6-9b31-62c413050034" name="变更" comment="">
+    <list default="true" id="d9cb649c-e951-4af6-9b31-62c413050034" name="变更" comment="update readme">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/amcl/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/amcl/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,8 +85,25 @@
       <workItem from="1653471754984" duration="1717000" />
       <workItem from="1653751674134" duration="1380000" />
       <workItem from="1653760370084" duration="15890000" />
-      <workItem from="1653808343772" duration="389000" />
+      <workItem from="1653808343772" duration="627000" />
+      <workItem from="1653810377823" duration="144000" />
+      <workItem from="1653810776291" duration="94000" />
     </task>
+    <task id="LOCAL-00001" summary="fix email password exposed">
+      <created>1653808833683</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1653808833683</updated>
+    </task>
+    <task id="LOCAL-00002" summary="update readme">
+      <created>1653808965698</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1653808965698</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -106,5 +122,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix email password exposed" />
+    <MESSAGE value="update readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="update readme" />
   </component>
 </project>

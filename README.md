@@ -24,6 +24,13 @@ The tool is a complete annotation suite based on [Django](https://www.djangoproj
 
 Our annotation process is that users (annotators) need to register and log in to their accounts first, and then managers can assign corresponding jobs to any user, and users who meet the permissions can also apply jobs freely. Reviewers can make corrections on major disagreements. User permissions can be manually updated by the administrator in the admin site, and all annotated records can be viewed.
 
+![1](static/demo/1.png)
+![2](static/demo/2.png)
+![3](static/demo/3.png)
+![4](static/demo/4.png)
+![5](static/demo/5.png)
+![6](static/demo/6.png)
+
 ### Requirements
 
 - python==3.7
