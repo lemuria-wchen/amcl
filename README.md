@@ -79,8 +79,6 @@ python manage.py runserver 127.0.0.1:8888
 
 When everything is ready, you can visit annotation homepage in http://127.0.0.1:8888/annotation, and admin homepage in http://127.0.0.1:8888/admin/. Based on this code, you have the flexibility to add tasks or functions that you want to add. 
 
-We provide a service website for testing, which host on http://10.192.9.84:20026/annotation/, where the username and password are both `test1`. For some reasons, this website can only be accessed through Fudan University's intranet.
-
 ### Task Assignment
 
 - Insert Data
@@ -121,6 +119,8 @@ from annotation.utils.job import assign
 # assign 10 abstracts to user with uid 0
 assign(uid=1, job_size=10, job_type=0)
 ```
+
+We provide a service website for testing, which host on http://10.192.9.84:20026/annotation/, where the username and password are both `test1`. For some reasons, this website can only be accessed through Fudan University's intranet. 
 
 ### How to Cite
 

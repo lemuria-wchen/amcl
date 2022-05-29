@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d9cb649c-e951-4af6-9b31-62c413050034" name="变更" comment="update readme">
+    <list default="true" id="d9cb649c-e951-4af6-9b31-62c413050034" name="变更" comment="add demo">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
@@ -87,7 +87,8 @@
       <workItem from="1653760370084" duration="15890000" />
       <workItem from="1653808343772" duration="627000" />
       <workItem from="1653810377823" duration="144000" />
-      <workItem from="1653810776291" duration="94000" />
+      <workItem from="1653810776291" duration="591000" />
+      <workItem from="1653811371337" duration="41000" />
     </task>
     <task id="LOCAL-00001" summary="fix email password exposed">
       <created>1653808833683</created>
@@ -103,7 +104,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653808965698</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="add demo">
+      <created>1653810927749</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1653810927749</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -126,6 +134,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix email password exposed" />
     <MESSAGE value="update readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="update readme" />
+    <MESSAGE value="add demo" />
+    <option name="LAST_COMMIT_MESSAGE" value="add demo" />
   </component>
 </project>
