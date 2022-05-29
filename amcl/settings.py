@@ -78,9 +78,9 @@ WSGI_APPLICATION = 'amcl.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'amcl',
-        'USER': 'root',
-        'PASSWORD': 'chenwei',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     },
@@ -132,9 +132,9 @@ STATICFILES_DIRS = [
 ]
 
 # Email setting
-EMAIL_HOST = 'mail.fudan.edu.cn'
+EMAIL_HOST = ''
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'chenwei18@fudan.edu.cn'
-EMAIL_HOST_PASSWORD = 'chenbin19920511*'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
-EMAIL_FROM = 'Fudan-DISC<chenwei18@fudan.edu.cn>'
+EMAIL_FROM = ''

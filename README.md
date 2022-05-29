@@ -52,6 +52,10 @@ DROP DATABASE if exists amcl;
 CREATE DATABASE if not exists amcl DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 ```
 
+### Django Setting
+
+please set up database and e-mail in `amcl/settings.py`. Besides, you also need to set the IP address and port in `annotation/utils/mail.py`, which should be consistent with the project deployment.  
+
 ### Django Migration
 
 ```shell
