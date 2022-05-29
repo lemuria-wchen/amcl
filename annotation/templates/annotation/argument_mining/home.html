@@ -1,0 +1,83 @@
+{% extends "am.html" %}
+{% load static %}
+
+{% block title %}
+    Annotation Home · FNLP-DISC Annotation Platform
+{% endblock %}
+
+{% block content %}
+
+
+    <div class="card bg-light text-dark">
+        <div class="card-header">
+            您好！{{ user.name }}，欢迎来到您的主页，您可以从这里找到所有的标注记录。
+        </div>
+
+        <div class="card-body">
+            <p class="card-text">
+                <strong>字段解释：</strong>
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                1. 每一篇文章都有一个 id，即<span class="text-red">文章编号</span>，正确答案的公布将使用文章编号为<span class="text-red">主键</span>公布。
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                2. Type Agreement 指的是你标注的类型与标准答案之间的匹配程度，Relation Agreement 指的是标注的关系与标准答案之间的匹配程度，
+                该数值<span class="text-red">越小</span>，说明<mark>您标注的结果与标准答案相差越大</mark>。
+            </p>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-hover" style="margin: 5% 0 0 0;">
+        <thead>
+        <tr>
+            <th>编号</th>
+            <th>文章 id</th>
+            <th>时间（min）</th>
+            <th>Type Agreement</th>
+            <th>Relation Agreement</th>
+            <th>标注</th>
+        </tr>
+        <tbody>
+        {% for annotated, t1, t2, t3 in annotateds %}
+
+            {% if t3 %}
+                 <tr class="table-danger">
+            {% else %}
+                 <tr>
+            {% endif %}
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    {% if t3 %}
+                        {{ annotated.id }} <sup><span class="text-red">reviewed</span></sup>
+                    {% else %}
+                        {{ annotated.id }}
+                    {% endif %}
+                </td>
+                <td>{{ annotated.duration_template | floatformat:2 }} </td>
+                <td>
+                    {% if t1 %}
+                        {{ t1 | floatformat:2 }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if t2 %}
+                        {{ t2 | floatformat:2 }}
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'am_annotate' annotated.job_id annotated.id %}">
+                        {% if annotated.is_annotated %}
+                            <button class="btn btn-success">
+                                编辑标注
+                            </button>
+                        {% else %}
+                            <button class="btn btn-warning">
+                                开始标注
+                            </button>
+                        {% endif %}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

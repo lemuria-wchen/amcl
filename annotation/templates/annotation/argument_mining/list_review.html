@@ -1,0 +1,196 @@
+{% extends "am.html" %}
+{% load static %}
+
+{% block title %}
+    Review · FNLP-DISC Annotation Platform
+{% endblock %}
+
+{% block content %}
+
+    <script>
+        window.onload = function () {
+            $('#review').addClass('active');
+        }
+    </script>
+
+    <h5 class="page-header">
+        欢迎{{ user.name }}同学，你已经审核 {{ num_reviewed }} 篇文章，薪酬为 {{ pays }} 元。
+    </h5>
+
+    <h6 class="page-header" style="margin: 1% 0 5% 0;">
+        该列表中实际上包含了所有待审核的文章，那些 Type Agreement 高于 0.5 以上的文章，不需要标注 Type 了（一般 3 个人至少有 2 个人的答案是一样的，选人多的就行），请重点关注 Relation
+    </h6>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#total">TOTAL</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#all">所有</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#done">已完成</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link active" data-toggle="tab" href="#current">待审核</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+
+        {% ifnotequal user.uid 1 %}
+            <div class="tab-pane fade" id="total">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>文章编号</th>
+                        <th>Type Agreement</th>
+                        <th>Relation Agreement</th>
+                        <th>Agreement</th>
+                        <th>分配给</th>
+                        <th>审核</th>
+                    </tr>
+                    <tbody>
+                    {% for id in sorted_ids %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ id.0 }}</td>
+                            <td>{{ id.1 | floatformat:2 }}</td>
+                            <td>{{ id.2 | floatformat:2 }}</td>
+                            <td>{{ id.3 | floatformat:2 }}</td>
+                            <td>
+                                {% ifequal id.5 1 %}
+                                    Yuan
+                                {% else %}
+                                    Dai
+                                {% endifequal %}
+                            </td>
+                            <td>
+                                <a href="{% url 'review_detail' id.0 %}">
+                                    {% if id.4 %}
+                                        <button class="btn btn-success">编辑审核</button>
+                                    {% else %}
+                                        <button class="btn btn-warning">开始审核</button>
+                                    {% endif %}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endifnotequal %}
+
+        <div class="tab-pane fade" id="all">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>文章编号</th>
+                    <th>Price</th>
+                    <th>Type Agreement</th>
+                    <th>Relation Agreement</th>
+                    <th>Agreement</th>
+                    <th>审核</th>
+                </tr>
+                <tbody>
+                {% for id in sorted_ids %}
+                    {% ifequal user.uid id.5 %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ id.0 }}</td>
+                            <td>{{ id.6 }}</td>
+                            <td>{{ id.1 | floatformat:2 }}</td>
+                            <td>{{ id.2 | floatformat:2 }}</td>
+                            <td>{{ id.3 | floatformat:2 }}</td>
+                            <td>
+                                <a href="{% url 'review_detail' id.0 %}">
+                                    {% if id.4 %}
+                                        <button class="btn btn-success">编辑审核</button>
+                                    {% else %}
+                                        <button class="btn btn-warning">开始审核</button>
+                                    {% endif %}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endifequal %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-pane fade" id="done">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>文章编号</th>
+                    <th>Price</th>
+                    <th>Type Agreement</th>
+                    <th>Relation Agreement</th>
+                    <th>Agreement</th>
+                    <th>审核</th>
+                </tr>
+                <tbody>
+                {% for id in sorted_ids %}
+                    {% ifequal user.uid id.5 %}
+                        {% if id.4 %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ id.0 }}</td>
+                                <td>{{ id.6 }}</td>
+                                <td>{{ id.1 | floatformat:2 }}</td>
+                                <td>{{ id.2 | floatformat:2 }}</td>
+                                <td>{{ id.3 | floatformat:2 }}</td>
+                                <td>
+                                    <a href="{% url 'review_detail' id.0 %}">
+                                        <button class="btn btn-success">编辑审核</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endifequal %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-pane active" id="current">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>文章编号</th>
+                    <th>Price</th>
+                    <th>Type Agreement</th>
+                    <th>Relation Agreement</th>
+                    <th>Agreement</th>
+                    <th>审核</th>
+                </tr>
+                <tbody>
+                {% for id in sorted_ids %}
+                    {% ifequal user.uid id.5 %}
+                        {% if not id.4 %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ id.0 }}</td>
+                                <td>{{ id.6 }}</td>
+                                <td>{{ id.1 | floatformat:2 }}</td>
+                                <td>{{ id.2 | floatformat:2 }}</td>
+                                <td>{{ id.3 | floatformat:2 }}</td>
+                                <td>
+                                    <a href="{% url 'review_detail' id.0 %}">
+                                        <button class="btn btn-warning">开始审核</button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endifequal %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

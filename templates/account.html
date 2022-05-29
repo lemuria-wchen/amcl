@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static 'media/favicon.ico' %}"/>
+    <link crossorigin="anonymous" media="all"
+          integrity="sha512-/uy49LxdzjR0L36uT6CnmV1omP/8ZHxvOg4zq/dczzABHq9atntjJDmo5B7sV0J+AwVmv0fR0ZyW3EQawzdLFA=="
+          rel="stylesheet"
+          href="https://github.githubassets.com/assets/frameworks-feecb8f4bc5dce34742f7eae4fa0a799.css"/>
+    <link crossorigin="anonymous" media="all"
+          integrity="sha512-0Dq+Bdp4xIEoUQ6d8RzDMUJdGejYZhWcZUh+JZDfYn/RCdp7u4QhKG8ABLNmvxL5YobdxQCLJaaacKNyIp8L2w=="
+          rel="stylesheet" href="https://github.githubassets.com/assets/site-d03abe05da78c48128510e9df11cc331.css"/>
+    <link crossorigin="anonymous" media="all"
+          integrity="sha512-DwZ+GZnIWOjM/uY/7EWZ6/Ww4Fzaci9Ax6oyK6uaFeGrJSaf3lsisc1KuaJn6+bwTiQEAYMbs4fXTDRwLSfitg=="
+          rel="stylesheet" href="https://github.githubassets.com/assets/github-0f067e1999c858e8ccfee63fec4599eb.css"/>
+    <script crossorigin="anonymous" async="async"
+            integrity="sha512-bn/3rKJzBl2H64K38R8KaVcT26vKK7BJQC59lwYc+9fjlHzmy0fwh+hzBtsgTdhIi13dxjzNKWhdSN8WTM9qUw=="
+            type="application/javascript" id="js-conditional-compat"
+            data-src="https://github.githubassets.com/assets/compat-bootstrap-6e7ff7ac.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha512-Xmgn7zbbctMYYn3NwkqJMhjQ5waCDf1M6Vxp7htDQgt96krJvVzHm+H7fqwkmk6LuEeD9EQxYNRCeTGrKH6DnQ=="
+            type="application/javascript"
+            src="https://github.githubassets.com/assets/environment-bootstrap-5e6827ef.js"></script>
+    <script crossorigin="anonymous" async="async"
+            integrity="sha512-mltvQjemV3MVO1HQOcoDzjSqA/ylEkm3eKp5hswwxXwKKZEHTEHngjkh8hObveLD1ftiJ2/CCERIJAOb14BqBQ=="
+            type="application/javascript" src="https://github.githubassets.com/assets/vendor-9a5b6f42.js"></script>
+    <script crossorigin="anonymous" async="async"
+            integrity="sha512-fXJ+Yept/NhpbURdpMmOAJNzxm6dMfuOfW3BTg5004+0fYrqsDCeFQnDw6wJubUpGFj5xYvFOR+GitE3/khKtQ=="
+            type="application/javascript" src="https://github.githubassets.com/assets/frameworks-7d727e61.js"></script>
+    <script crossorigin="anonymous" async="async"
+            integrity="sha512-ue+pewqcGAP7CWdyIqj39bazp+caCu5yO9ZhWJ2FcCYpai6ldQEJTUOPNvOxPy4+SWCdSPRVRaeign2Bw5MAqQ=="
+            type="application/javascript"
+            src="https://github.githubassets.com/assets/github-bootstrap-b9efa97b.js"></script>
+    <script crossorigin="anonymous" async="async"
+            integrity="sha512-4GcSWGoe36+BoWho4gtJcByZe8j43w+lt2/PDe3rmBxRVSgD29YipDwuIywe8fvOd2b2CszBqaPGxSznUtE3Xg=="
+            type="application/javascript" data-module-id="./drag-drop.js"
+            data-src="https://github.githubassets.com/assets/drag-drop-e0671258.js"></script>
+    <script crossorigin="anonymous" async="async"
+            integrity="sha512-2k8dDHk0yt52uKvOvgc9cwOXOeJhxBfVP5kPS2BrCdytDmtEIJ2yone26vFENAyk1a2aFQ7KDgEevRQafuAf8A=="
+            type="application/javascript" data-module-id="./gist-vendor.js"
+            data-src="https://github.githubassets.com/assets/gist-vendor-da4f1d0c.js"></script>
+    <script crossorigin="anonymous" async="async"
+            integrity="sha512-iv+4yAluOjiG50ZypUBIWIUCRDo6JEBf2twvmd5AelxgPQJO/XC1oNMGTMdDfKt30p7G7fHEOTZ2utHWDJ9PPQ=="
+            type="application/javascript" data-module-id="./randomColor.js"
+            data-src="https://github.githubassets.com/assets/randomColor-8affb8c8.js"></script>
+    <script crossorigin="anonymous" async="async"
+            integrity="sha512-r1gAP+8+wmuHoa+aCk+2SvyUMR8nhqGz4GUlfbbeTlr8oBDh+yl3cSlRWDw6rwoYM+EAAI7V2Lbgfl5MS4MRcA=="
+            type="application/javascript"
+            src="https://github.githubassets.com/assets/unsupported-bootstrap-af58003f.js"></script>
+    <style>
+        #logo {
+            height: 96px;
+            width: 96px;
+        }
+    </style>
+</head>
+
+<body class="logged-out env-production page-responsive session-authentication">
+
+<div class="header header-logged-out width-full pt-5 pb-4" role="banner">
+    <div class="container clearfix width-full text-center">
+        <a class="navbar-brand" href="https://sds.fudan.edu.cn/">
+            <img alt="FUDAN University Logo" src="{% static 'media/logo.png' %}" id="logo">
+        </a>
+    </div>
+</div>
+
+{% block content %}{% endblock %}
+
+<div class="footer container-lg p-responsive py-6 mt-6 f6" role="contentinfo">
+    <ul class="list-style-none d-flex flex-justify-center">
+        <li class="mr-3"><a href="{% url 'faq' %}">Terms</a></li>
+        <li><a class="link-gray" href="{% url 'about' %}">Contact US</a></li>
+    </ul>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+{% extends 'am.html' %}
+{% load static %}
+
+{% block title %}
+    About US
+{% endblock %}
+
+{% block content %}
+
+    <style>
+        div.row {
+            padding: 1% 1%;
+        }
+
+        #header {
+            padding: 2% 1%;
+        }
+
+        #admin, #group {
+            height: 400px;
+            width: 300px;
+        }
+
+        p {
+            text-indent: 0.5cm;
+        }
+    </style>
+
+    <script>
+        window.onload = function () {
+            $('#about').addClass('active');
+        }
+    </script>
+
+    <div class="row" id="header">
+        <h4>联系信息</h4>
+    </div>
+
+    <div class="row">
+        <p><strong>电子邮箱</strong>：18110980003@fudan.edu.cn</p>
+    </div>
+
+    <div class="row">
+        <p><strong>地址</strong>：上海市杨浦区五角场邯郸路539号新金博大厦</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <img alt="管理员微信" src="{% static 'media/admin.jpeg' %}" id="admin">
+        </div>
+
+        <div class="col-md-4">
+            <img alt="标注讨论群" src="{% static 'media/group.jpeg' %}" id="group">
+        </div>
+    </div>
+
+{% endblock %}

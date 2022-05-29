@@ -1,0 +1,65 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="shortcut icon" href="{% static 'media/favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            <!-- popover -->
+            $('[data-toggle="popover"]').popover({delay: {hide: 200}});
+            <!-- tooltip -->
+            $('[data-toggle="tooltip"]').tooltip({delay: {hide: 1000}});
+        });
+    </script>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
+
+    <!-- brand -->
+    <a class="navbar-brand" href="https://sds.fudan.edu.cn/">
+        <img alt="Fudan University Logo" src="{% static 'media/logo.png' %}" id="logo">
+    </a>
+
+    <!-- navbar text-->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'index' %}">Annotation Platform</a>
+        </li>
+    </ul>
+
+    <!-- nav block -->
+    {% block nav %}{% endblock %}
+
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                {{ request.session.username }}
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="{% url 'home' %}">Home</a>
+                <a class="dropdown-item" href="#">Setting</a>
+                <a class="dropdown-item" href="{% url 'logout' %}">Sign-out</a>
+            </div>
+        </li>
+    </ul>
+</nav>
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

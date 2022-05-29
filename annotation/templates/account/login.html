@@ -1,0 +1,71 @@
+{% extends 'account.html' %}
+{% load static %}
+
+{% block title %}
+    Sign in ·  FNLP-DISC Annotation Platform
+{% endblock %}
+
+{% block content %}
+
+    <style>
+        h2 {
+            font-weight: normal;
+        }
+
+        .top {
+            margin: 0 0 0 0;
+        }
+    </style>
+
+    <div class="auth-form px-3">
+        <!-- 登录表单 -->
+        <form action="" accept-charset="UTF-8" method="post">
+            {% csrf_token %}
+            <!-- 表格标题 -->
+            <div class="auth-form-header p-1">
+                <h2>Sign in Annotation Platform</h2>
+            </div>
+            <!-- 错误提示 -->
+            {% if message %}
+                <div id="js-flash-container">
+                    <div class="flash flash-full flash-error ">
+                        <div class="container-lg px-2">
+                            <button class="flash-close js-flash-close" type="button" aria-label="Dismiss this message">
+                                <svg class="octicon octicon-x" viewBox="0 0 16 16" width="16" height="16"
+                                     aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                          d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"></path>
+                                </svg>
+                            </button>
+                            {{ message }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <!-- 表单 -->
+            <div class="auth-form-body mt-2">
+
+                <div class="form-group top">
+                    <label for="id_username">Email address or username</label>
+                    {{ login_form.username }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password">Password
+                        <a class="label-link" href="{% url 'forget' %}">Forgot password?</a>
+                    </label>
+                    {{ login_form.password }}
+                </div>
+
+                <input type="submit" name="commit" value="Sign in" tabindex="3" class="btn btn-primary btn-block"
+                       data-disable-with="Signing in…"/>
+            </div>
+        </form>
+
+        <p class="create-account-callout mt-3">
+            New to here? <a href="{% url 'register' %}"> &nbsp;Create an account</a>.
+        </p>
+
+    </div>
+
+{% endblock %}

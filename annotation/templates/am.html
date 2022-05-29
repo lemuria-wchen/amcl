@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block nav %}
+
+    <!-- nav bar -->
+    <ul class="navbar-nav" id="navbar">
+
+        <li class="nav-item"><a class="nav-link" href="{% url 'am' %}" id="annotation">Annotation</a></li>
+
+        <li class="nav-item"><a class="nav-link" href="{% url 'leaderboard' %}" id="leaderboard">Leaderboard</a></li>
+
+        <li class="nav-item"><a class="nav-link" href="{% url 'faq' %}" id="faq">FAQ</a></li>
+
+        <li class="nav-item"><a class="nav-link" href="{% url 'tutorial' %}" id="tutorial">Tutorial<sup><span
+                class="text-red"><strong> new</strong></span></sup></a></li>
+
+        <li class="nav-item"><a class="nav-link" href="{% url 'about' %}" id="about">About</a></li>
+
+        {% ifequal user.role 3 %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'review' %}" id="review">Review<sup><span
+                    class="text-red"><strong> new</strong></span></sup></a></li>
+        {% endifequal %}
+
+        <li class="nav-item"><a class="nav-link" href="{% url 'cl_review' %}" id="cl_review">气候变化问题综述<sup><span
+                class="text-red"><strong> new</strong></span></sup></a></li>
+
+    </ul>
+
+{% endblock %}
+

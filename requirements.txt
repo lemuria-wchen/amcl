@@ -1,0 +1,6 @@
+django==3.0
+nltk==3.7
+pymysql==1.0.2
+tqdm==4.64.0
+numpy
+sklearn

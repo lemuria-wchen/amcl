@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block nav %}
+
+    <!-- nav bar -->
+    <ul class="navbar-nav" id="navbar">
+
+        <li class="nav-item"><a class="nav-link" href="{% url 'am' %}" id="annotation">Annotation</a></li>
+
+        <li class="nav-item"><a class="nav-link" href="{% url 'leaderboard' %}" id="leaderboard">Leaderboard</a></li>
+
+        <li class="nav-item"><a class="nav-link" href="{% url 'faq' %}" id="faq">FAQ</a></li>
+
+        <li class="nav-item"><a class="nav-link" href="{% url 'tutorial' %}" id="tutorial">Tutorial<sup><span
+                class="text-red"><strong> new</strong></span></sup></a></li>
+
+        <li class="nav-item"><a class="nav-link" href="{% url 'about' %}" id="about">About</a></li>
+
+        <li class="nav-item"><a class="nav-link" href="{% url 'am_review' %}" id="review"><span
+                class="text-red">Review</span></a></li>
+    </ul>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Annotation Publishing Platform · FNLP-DISC
+{% endblock %}
+
+{% block content %}
+
+    <div class="card bg-light text-dark">
+
+        <div class="card-header">
+            任务一：文献摘要自动分析
+        </div>
+
+        <div class="card-body">
+            <p class="card-text"><strong>任务详情</strong>：本任务共对 2,000 篇左右<mark>气候变化领域</mark>中的文献摘要进行标注，文献来源于<a href="http://apps.webofknowledge.com/">Web of Science</a> 收录的从 2000 年到 2020 年间发表的<mark>高引用</mark>文章，对每篇摘要，我们的标注任务是找出每个句子的类型（共 5 种类型，分别是<span class="text-red">研究目的、研究方法、研究结果、研究结论、其他</span>）以及这些句子之间存在的关系（<span class="text-red">支持、反对</span>）。</p>
+            <p class="card-text"><strong>启动日期</strong>: 2020 年 7 月 28 日</p>
+            <p class="card-text"><strong>截止日期</strong>: 待定</p>
+            <p class="card-text"><strong>薪酬</strong>: <span class="text-red">平均 1.35 元 / 篇</span></p>
+            <p class="card-text"><strong>标注类型</strong>: 文本</p>
+            <a href="{% url 'am' %}" class="card-link"><button type="button" class="btn btn-outline-primary"> 开始标注</button></a>
+        </div>
+
+        <div class="card-footer">
+            需要发布任务？请联系<a href="{% url 'about' %}">管理员</a>。
+        </div>
+
+    </div>
+
+{% endblock %}

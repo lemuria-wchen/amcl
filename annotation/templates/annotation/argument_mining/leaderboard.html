@@ -1,0 +1,82 @@
+{% extends "am.html" %}
+{% load static %}
+
+{% block title %}
+    Leaderboard
+{% endblock %}
+
+
+{% block content %}
+
+    <script>
+        window.onload = function () {
+            <!-- nav bar -->
+            $('#leaderboard').addClass('active');
+
+            <!-- top 3 player -->
+            $('tr:eq(1)').addClass('table-success');
+            $('tr:eq(2)').addClass('table-primary');
+            $('tr:eq(3)').addClass('table-warning');
+        }
+    </script>
+
+    <table class="table table-bordered table-hover" id="leaderboard_tb">
+        <thead class="thead-light">
+        <tr>
+            <th>
+                <span data-toggle="popover" data-html="true" data-trigger="hover" data-placement="left" title="排名说明"
+                      data-content="按照<span class='font-italic'>已标注文章数</span> 排名，<span class='text-red'>最终排名</span> 前 3 的用户将获取彩蛋奖励。">
+                    排名<sup><span class="text-red"> new</span></sup>
+                </span>
+            </th>
+            <th>用户ID</th>
+            <th>用户名</th>
+            <th>已申请任务数</th>
+            <th>已申请文章数</th>
+            <th>已标注文章数</th>
+            {% ifequal user.role 3 %}
+                <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top"
+                    title="<em>单位：元（仅审核人员可见）</em">
+                    总薪酬
+                </th>
+            {% endifequal %}
+            {% ifequal user.role 3 %}
+                <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top"
+                    title="<em>单位：小时（仅审核人员可见）</em">
+                    总用时
+                </th>
+            {% endifequal %}
+            <th>
+                <span data-toggle="popover" data-html="true" data-trigger="hover" data-placement="right" title="用户等级说明"
+                      data-content="等级为 1 代表 <span class='text-red'>普通用户</span><br>等级为 2 代表 <span class='text-red'>具有申请任务权限的用户</span><br>等级为 3 代表 <span class='text-red'>具有审核任务权限的用户</span>">
+                    等级<sup><span class="text-red"> new</span></sup>
+                </span>
+            </th>
+            <th>
+                注册时间
+            </th>
+        </tr>
+        <tbody>
+        {% for record in records %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ record.uid }}</td>
+                <td>{{ record.username }}</td>
+                <td>{{ record.num_jobs }}</td>
+                <td>{{ record.num_instances }}</td>
+                <td>{{ record.num_annotated_instances }}</td>
+                {% ifequal user.role 3 %}
+                    <td>&yen; {{ record.reward | floatformat:2 }}</td>
+                {% endifequal %}
+                {% ifequal user.role 3 %}
+                    <td>{{ record.duration | floatformat:2 }} h</td>
+                {% endifequal %}
+                <td>{{ record.role }}</td>
+                <td>{{ record.created | date:"Y-m-d" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+

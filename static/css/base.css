@@ -1,0 +1,101 @@
+/* global */
+
+.table tbody tr td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+label select {
+    display: inline;
+    vertical-align: middle;
+}
+
+.table thead th {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table td.segment {
+    text-align: left;
+}
+
+/* base.html */
+
+#logo {
+    width: 40px;
+}
+
+/* index.html */
+
+span.text-red {
+    color: red;
+}
+
+.card {
+    margin: 2.5% 0 0 0;
+}
+
+.card-header {
+    font-size: larger;
+    font-weight: bolder;
+}
+
+/* am.html */
+
+#navbar {
+    padding: 0 0 0 10%;
+}
+
+/* list.html */
+
+button.btn-job {
+    margin: 2% 0 0.5% 0;
+}
+
+/* leaderboard.html */
+
+p.card-text {
+    text-indent: 0.5cm;
+}
+
+p.header {
+    font-size: larger;
+    text-indent: 0;
+    color: crimson;
+    font-weight: bolder;
+}
+
+/* detail.html */
+
+span.transl_sent {
+    display: none;
+}
+
+#transl_sent {
+    margin: 0 0 0.5% 0;
+}
+
+#leaderboard_tb {
+    margin: 3% 3%;
+}
+
+#rank {
+    color: black;
+}
+
+#price {
+    margin: 2% 0 0 0;
+}
+
+.page-header {
+    text-align: center;
+    margin: 5% 0 3% 0;
+}
+
+#submit_table {
+    margin: 5% 0 5% 0;
+}
+
+#insert {
+    margin: 0 0 0.5% 0;
+}

@@ -1,0 +1,53 @@
+{% extends 'account.html' %}
+{% load static %}
+
+{% block title %}
+    Account activation · FNLP-SDS Annotation Platform
+{% endblock %}
+
+{% block content %}
+
+    <style>
+        h2 {
+            font-weight: normal;
+        }
+
+        p.activated {
+            background: #c0fff3;
+            font-size: large;
+        }
+
+        p.normal_activated {
+            font-size: larger;
+        }
+
+        span.activated_info {
+            color: #a30029;
+        }
+    </style>
+
+    <div class="auth-form px-lg-1">
+        <form action="" accept-charset="UTF-8" method="post">
+            <div class="auth-form-header p-1">
+                <h2>Account Activation</h2>
+            </div>
+            {% if message %}
+                <p class="create-account-callout mt-3 activated">
+                    <span class="activated_info">{{ message }}</span>
+                </p>
+            {% else %}
+                <p class="create-account-callout mt-3 activated">
+                    Congratulations! Your account <span class="activated_info">{{ username }}</span> has been activated.
+                </p>
+                <p class="create-account-callout mt-3 normal_activated">
+                    Now You can Login via your email or username <a href="{% url 'login' %}">here</a> .
+                </p>
+            {% endif %}
+        </form>
+        <p class="create-account-callout mt-3">
+            Register again? Click <a href="{% url 'register' %}">here</a> .
+        </p>
+    </div>
+
+{% endblock %}
+

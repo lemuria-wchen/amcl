@@ -1,0 +1,166 @@
+{% extends 'account.html' %}
+{% load static %}
+
+{% block title %}
+    Sign up · FNLP-DISC Annotation Platform
+{% endblock %}
+
+{% block content %}
+
+    <style>
+        h2 {
+            font-weight: normal;
+        }
+
+        span {
+            color: -webkit-link;
+        }
+
+        .help-block {
+            font-weight: lighter;
+            font-size: small
+        }
+
+        .top {
+            margin: 0 0 0 0;
+        }
+
+        p.registered {
+            background: #c0fff3;
+            font-size: large;
+        }
+
+        p.registered_middle {
+            font-size: larger
+        }
+    </style>
+
+    <div class="auth-form px-lg-1 ">
+        <form action="" accept-charset="UTF-8" method="post">
+            {% csrf_token %}
+
+            <div class="auth-form-header p-1">
+                <h2>Sign up Annotation Platform</h2>
+            </div>
+
+            {% if is_registered %}
+                <!-- 注册成功提醒 -->
+                <p class="create-account-callout mt-3 registered">
+                    You're almost here! An <span><a href="http://mail.fudan.edu.cn/" target="_blank">account activation email</a></span>
+                    has been sent to your email address.
+                </p>
+            {% else %}
+                <!-- 错误提示 -->
+                {% if message %}
+                    <div id="js-flash-container">
+                        <div class="flash flash-full flash-error ">
+                            <div class="container-lg px-2">
+                                <button class="flash-close js-flash-close" type="button"
+                                        aria-label="Dismiss this message">
+                                    <svg class="octicon octicon-x" viewBox="0 0 16 16" width="16" height="16"
+                                         aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                              d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"></path>
+                                    </svg>
+                                </button>
+                                {{ message }}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <!-- 表单 -->
+                <div class="auth-form-body mt-1">
+                    <div class="form-group top">
+                        <label for="id_email">Email address</label>
+                        {{ register_form.email }}
+                        <p class="help-block help-text">
+                            请填写学校邮箱，以 @xxx.edu.cn 结尾，复旦大学的同学请填<a href="http://mail.fudan.edu.cn/"
+                                                                 target="_blank">复旦邮箱</a>
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_student_id">Student ID</label>
+                        {{ register_form.student_id }}
+                        <p class="help-block help-text">
+                            请填写您的<span>学号</span>并确保其准确性，后续薪酬将根据学号信息以<span>劳务费用</span>形式发放
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_username">Username</label>
+                        {{ register_form.username }}
+                        <p class="help-block help-text">
+                            用户名只能含有汉字、数字、字母、下划线不能以下划线开头和结尾
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_name">Name</label>
+                        {{ register_form.name }}
+                        <p class="help-block help-text">
+                            请填写您的<span>真实姓名</span>，填写后不可修改
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_phone_number">Phone number</label>
+                        {{ register_form.phone_number }}
+                        <p class="help-block help-text">
+                            请填写<span>正确的手机号码</span>，这样确保我们在某些意外情况下可以联系到您
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_gender">Gender</label>
+                        {{ register_form.gender }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_education">Education</label>
+                        {{ register_form.education }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_school">School</label>
+                        {{ register_form.school }}
+                        <p class="help-block help-text">
+                            请选择您所在的<span>学院</span>，如果没有找到您所在的学院名称，请选择<span>其他</span>
+                        </p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_password">Password</label>
+                        {{ register_form.password }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_repeated_password">Password confirmation</label>
+                        {{ register_form.repeated_password }}
+                    </div>
+
+                    <input type="submit" name="commit" value="Sign up" tabindex="3" class="btn btn-primary btn-block"
+                           data-disable-with="Signing up…"/>
+                </div>
+            {% endif %}
+        </form>
+
+        {% if is_registered %}
+            <!-- 登录邮箱提醒 -->
+            <p class="create-account-callout mt-3 registered_middle">
+                Login your email <a href="http://mail.fudan.edu.cn/" target="_blank">here</a> and click the link in the
+                email to activate your account.
+            </p>
+            <!-- 登录提醒 -->
+            <p class="create-account-callout mt-3">
+                Account activated? <a href="{% url 'login' %}"> &nbsp;Login</a> here .
+            </p>
+        {% else %}
+            <!-- 登录提醒 -->
+            <p class="create-account-callout mt-3">
+                Already have an account? <a href="{% url 'login' %}"> &nbsp;Login</a> here .
+            </p>
+        {% endif %}
+    </div>
+
+{% endblock %}

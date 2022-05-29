@@ -1,0 +1,431 @@
+{% extends "am.html" %}
+{% load static %}
+
+{% block title %}
+    Annotation Detail · FNLP-DISC
+{% endblock %}
+
+{% block content %}
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+
+    <script src="{% static 'js/annotate.js' %}"></script>
+    <script>
+        window.onload = function () {
+
+            <!-- 分句翻译 -->
+            let transl_sent_btn = $('#transl_sent');
+            transl_sent_btn.bind('click', function () {
+                if (transl_sent_btn.text() === 'Translate') {
+                    $('.transl_sent').show('normal');
+                    transl_sent_btn.text('Hide');
+                } else {
+                    $('.transl_sent').hide('normal');
+                    transl_sent_btn.text('Translate');
+                }
+            });
+
+            <!-- 接收前端传递来的变量 -->
+            let arg_type = {{ arg_type | safe }};
+            let arg_rel = {{ arg_rel | safe }};
+            let num_segments = {{ article.num_segments | safe }};
+
+            let arg_type_real = {{ arg_type_real | safe }};
+            let arg_rel_real = {{ arg_rel_real | safe }};
+
+            <!-- argument type -->
+            if (arg_type) {
+                $('.arg_type').each(function (index) {
+                    $(this).html(insertArgumentType(arg_type[index], 'yes'));
+                })
+            } else {
+                $('.arg_type').each(function () {
+                    $(this).html(insertArgumentType());
+                })
+            }
+
+            if (arg_type_real) {
+                $('.arg_type_real').each(function (index) {
+                    $(this).html(insertArgumentType(arg_type_real[index], 'yes'));
+                })
+            }
+
+            <!-- argument relation -->
+            if (arg_rel) {
+                arg_rel.forEach(function (value) {
+                    $('#arg_rel').append(insertArgumentRelation(num_segments, value, 'yes'))
+                });
+            } else {
+                $('#arg_rel').append(insertArgumentRelation(num_segments));
+                $('#arg_rel').append(insertArgumentRelation(num_segments));
+                $('#arg_rel').append(insertArgumentRelation(num_segments));
+            }
+
+            if (arg_type_real) {
+                arg_rel_real.forEach(function (value) {
+                    $('#arg_rel_real').append(insertArgumentRelation(num_segments, value, 'yes', 'yes'))
+                });
+            }
+
+            <!-- difficulty -->
+            $('#difficulty').html(insertDifficulty({{ diff }}, 'yes'));
+
+            <!-- 绑定插入按钮 -->
+            $('#insert').bind('click', function () {
+                $('#arg_rel').append(insertArgumentRelation(num_segments));
+                $('select').selectpicker();
+            });
+
+            <!-- 绑定编辑按钮 -->
+            $('#edit').bind('click', function () {
+                $('#insert').css('display', 'block');
+                $('.arg_type').each(function (index) {
+                    $(this).html(insertArgumentType(arg_type[index]));
+                })
+                $('.arg_rel').remove();
+                arg_rel.forEach(function (value) {
+                    $('#arg_rel').append(insertArgumentRelation(num_segments, value))
+                });
+                $('#difficulty').html(insertDifficulty({{ diff }}));
+                $('.op').css('display', 'block');
+                $('.submit').css('display', 'block');
+                $('.edit').css('display', 'none');
+
+                $('select').selectpicker();
+            });
+
+            $('select').selectpicker();
+        }
+    </script>
+
+    <!-- meta -->
+    <div class="card bg-light text-dark">
+
+        <div class="card-header">
+            <a data-toggle="collapse" href="#meta">
+                <span data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                      title="<em>文章标题</em">{{ article.title_template }}</span>
+            </a>
+        </div>
+
+        <div id="meta" class="panel-collapse collapse show">
+            <div class="card-body">
+                <p class="card-text">
+                    <strong data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                            title="<em>作者列表（显示前 5个）</em">Author: </strong> {{ article.author_template }}
+                </p>
+                <p class="card-text">
+                    <strong data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                            title="<em>数字对象唯一标识符<a href='https://en.wikipedia.org/wiki/Digital_object_identifier'> doi </a></em>">DOI: </strong> {{ article.doi }}
+                </p>
+                <p class="card-text">
+                    <strong data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                            title="<em>原文摘要</em>">Abstract: </strong>
+                    {#                    {% for sentence in article.get_sentences %}#}
+                    {#                        {{ sentence }}#}
+                    {#                        <a href="#Segment_{{ forloop.counter }}"><sup>[{{ forloop.counter }}]</sup></a>&nbsp;#}
+                    {{ article.abstract }}
+                    {#                    {% endfor %}#}
+                </p>
+                <p class="card-text">
+                    <strong data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                            title="<em>摘要中文翻译，基于 <a href='https://api.fanyi.baidu.com/'><u>百度翻译开放平台</u></a></em>">摘要: </strong>
+                    {{ article.transl_abstract }}
+                </p>
+                {% if article.keyword_template %}
+                    <p class="card-text">
+                        <strong data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                                title="<em>关键词列表</em>">Keyword: </strong> {{ article.keyword_template }}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <strong data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                    title="<em>期刊名称与发表年份</em>">{{ article.journal_template }}</strong>
+        </div>
+    </div>
+
+    <!-- price -->
+    <table class="table table-bordered table-hover" id="price">
+        <thead>
+        <tr>
+            <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                title="<em>数据库中文章的编号，文章标识符</em>">
+                文章编号
+            </th>
+            <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top"
+                title="<em>句子个数乘以 0.15 元</em>">价格
+            </th>
+            <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top"
+                title="<em>该建议时间为熟悉标注后的时间，需要较高的标注熟练度</em>">建议完成时间
+            </th>
+            <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top"
+                title="<em>是否已标注</em>">标注情况
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if annotated.is_annotated %}
+            <tr class="table-success">
+                {% else %}
+            <tr class="table-warning">
+        {% endif %}
+        <td>{{ article.id }} </td>
+        <td>{{ article.get_price | floatformat:2 }} 元</td>
+        <td>{{ article.get_time | floatformat:2 }} 分钟</td>
+        {% if annotated.is_annotated %}
+            <td>
+                已标注
+            </td>
+        {% else %}
+            <td>
+                未标注
+            </td>
+        {% endif %}
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- annotation task -->
+    <form action="" accept-charset="UTF-8" method="post" id="annotated_form">
+        {% csrf_token %}
+
+        <!-- task 1: argument type -->
+        <h5 class="page-header">
+            任务1：句子类型识别
+        </h5>
+
+        <div class="alert alert-success" style="margin: 0 0 1% 0;">
+            <strong>注意！</strong> 你应该认真阅读 <a href="{% url 'tutorial' %}" target="_blank" class="alert-link">标注教程</a>。
+        </div>
+
+        <button class="btn btn-primary" type="button" id="transl_sent" data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="right" title="<em>翻译所有的句子</em>">Translate</button>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                    title="<em>句子 ID</em>" style="width: 5%;"> ID
+                </th>
+                {% if exit_real %}
+                    <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top"
+                        title="<em>句子（原文和对应中文翻译）</em>" style="width: 65%;"> Segment
+                    </th>
+                {% else %}
+                    <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top"
+                        title="<em>句子（原文和对应中文翻译）</em>" style="width: 80%;"> Segment
+                    </th>
+                {% endif %}
+                <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top"
+                    title="<em>句子标签</em>" style="width: 15%;"> Label
+                </th>
+                {% if exit_real %}
+                    <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top"
+                        title="<em>审核人员的标签</em>" style="width: 15%"><span class="text-red">True Label</span>
+                    </th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for sentence, transl_sentence in article.sentences_template %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td class="segment" id="Segment_{{ forloop.counter }}">
+                        <span class="sent">{{ sentence }}</span>
+                        <span class="transl_sent"><br>{{ transl_sentence }}</span>
+                    </td>
+                    <td class="arg_type">
+                    </td>
+                    {% if exit_real %}
+                        <td class="arg_type_real" style="color: red">
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- task 2: argument relation -->
+        <h5 class="page-header">
+            任务2：句子关系识别
+        </h5>
+
+        <div class="alert alert-success" style="margin: 0 0 1% 0;">
+            <strong>注意！</strong> 你应该认真阅读 <a href="{% url 'tutorial' %}" target="_blank" class="alert-link">标注教程</a>。
+        </div>
+
+        {% if annotated.is_annotated %}
+            <button id="insert" class="btn btn-primary" type="button" data-toggle="tooltip" data-html="true"
+                    style="display: none"
+                    data-trigger="hover" data-placement="top" title="<em>点击按钮插入句子间的关系</em">Insert Relation
+            </button>
+        {% else %}
+            <button id="insert" class="btn btn-primary" type="button" data-toggle="tooltip" data-html="true"
+                    data-trigger="hover" data-placement="top" title="<em>点击按钮插入句子间的关系</em">Insert Relation
+            </button>
+        {% endif %}
+
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top"
+                    title="<em>句子 ID</em>"> Segment ID
+                </th>
+                <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top"
+                    title="<em>根据经验绝大多数句子关系都为 < 支持 > 关系</em>"> Relation
+                </th>
+                <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top"
+                    title="<em>句子 ID</em>"> Segment ID
+                </th>
+                {% if annotated.is_annotated %}
+                    <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top" class="op"
+                        style="display: none" title="<em>删除句子关系</em>"> Operation
+                    </th>
+                {% else %}
+                    <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top" class="op"
+                        title="<em>删除句子关系</em>"> Operation
+                    </th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody id="arg_rel">
+            </tbody>
+        </table>
+
+        {% if exit_real %}
+            <h5 class="page-header" style="color: red">
+                任务2：句子关系识别（审核人员标注的关系）
+            </h5>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th> Segment ID
+                    </th>
+                    <th> Relation
+                    </th>
+                    <th> Segment ID
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="arg_rel_real" style="color: red">
+                </tbody>
+            </table>
+        {% endif %}
+
+        <!-- 提交表 -->
+        <table class="table table-bordered table-hover table-striped" id="submit_table">
+            <thead>
+            <tr>
+                <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top" style="width: 60%;"
+                    title="<em>越不确定，标注难度越高。</em>"> 您认为这篇文章标注的难度
+                </th>
+                {% if annotated.is_annotated %}
+                    <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top" class="edit"
+                        title="<em>点击该按钮可以编辑您已标注的结果</em>"> 编辑标注结果
+                    </th>
+                {% else %}
+                    <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top" class="edit"
+                        style="display: none" title="<em>点击该按钮可以编辑您已标注的结果</em>"> 编辑标注结果
+                    </th>
+                {% endif %}
+                {% if annotated.is_annotated %}
+                    <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top" class="submit"
+                        style="display: none" title="<em>点击该按钮可以提交您已标注的结果</em>"> 提交标注结果
+                    </th>
+                {% else %}
+                    <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top" class="submit"
+                        title="<em>点击该按钮可以提交您已标注的结果</em>"> 提交标注结果
+                    </th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td id="difficulty">
+                </td>
+                {% if annotated.is_annotated %}
+                    <td class="edit">
+                        <input type="button" value="编辑" tabindex="3" class="btn btn-warning" id="edit"
+                               data-disable-with="编辑中 ..."/>
+                    </td>
+                {% else %}
+                    <td style="display: none" class="edit">
+                        <input type="button" value="编辑" tabindex="3" class="btn btn-warning" id="edit"
+                               data-disable-with="编辑中 ..."/>
+                    </td>
+                {% endif %}
+
+                {% if annotated.is_annotated %}
+                    <td style="display: none" class="submit">
+                        <input type="submit" value="提交" tabindex="3" class="btn btn-success" id="submit"
+                               data-disable-with="提交中 ..."/>
+                    </td>
+                {% else %}
+                    <td class="submit">
+                        <input type="submit" value="提交" tabindex="3" class="btn btn-success" id="submit"
+                               data-disable-with="提交中 ..."/>
+                    </td>
+                {% endif %}
+            </tr>
+            </tbody>
+        </table>
+    </form>
+
+    {#    <svg width="960" height="600"></svg>#}
+
+    <!-- 翻页栏 -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if previous_article_id %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'am_annotate' annotated.job_id previous_article_id %}">
+                        &laquo; 上一页
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">
+                        &laquo; 上一页
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for record in annotateds %}
+                {% ifequal record.id annotated.id %}
+                    <li class="page-item active">
+                        <a class="page-link" href="{% url 'am_annotate' annotated.job_id record.id %}">
+                            {{ forloop.counter }}
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url 'am_annotate' annotated.job_id record.id %}">
+                            {{ forloop.counter }}
+                        </a>
+                    </li>
+                {% endifequal %}
+            {% endfor %}
+
+            {% if next_article_id %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'am_annotate' annotated.job_id next_article_id %}">
+                        下一页 &raquo;
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">
+                        下一页 &raquo;
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+{% endblock %}

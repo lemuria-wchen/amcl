@@ -1,0 +1,14 @@
+{% extends 'am.html' %}
+{% load static %}
+
+{% block title %}
+    Video
+{% endblock %}
+
+{% block content %}
+
+    <video controls autoplay width='1000' height='600' style="margin: 5% 0 5% 0;">
+        <source src="/static/media/{{ name }}.mp4" type="video/mp4">
+    </video>
+
+{% endblock %}

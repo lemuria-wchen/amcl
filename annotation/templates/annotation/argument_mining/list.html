@@ -1,0 +1,307 @@
+{% extends "am.html" %}
+{% load static %}
+
+{% block title %}
+    Annotation Platform · FNLP-DISC
+{% endblock %}
+
+{% block content %}
+
+    <script>
+        window.onload = function () {
+            <!-- nav bar -->
+            $('#annotation').addClass('active');
+        }
+    </script>
+
+    <!-- tips -->
+    <div class="card bg-light text-dark">
+        <div class="card-header">
+            你好，请在开始标注之前仔细阅读以下信息。
+        </div>
+
+        <div class="card-body">
+            <p class="card-text">
+                <strong>标注步骤：</strong>
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                1. 阅读论文摘要，选择每个句子的类型（共 5 种类型，分别是<span class="text-red">研究目的、研究方法、研究结果、研究结论、其他</span>）。
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                2. 如果这些句子之间
+                <mark>存在支持或反对的关系</mark>
+                ，点击插入关系按钮，添加句子之间的<span class="text-red">支持或反对关系</span>，最后点击
+                <mark>提交</mark>
+                按钮。
+            </p>
+
+            <p class="card-text">
+                <strong>标注教程：</strong>
+                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                请在正式标注前，先观看<a href="{% url 'tutorial' %}">标注教程</a>和<a href="#">标注视频教程</a>，如果您有任何问题，请查看<a
+                    href="{% url 'faq' %}">FAQ</a>或者在<a href="{% url 'about' %}">微信讨论群</a>中提问。
+            </p>
+        </div>
+    </div>
+
+    <!-- system job button -->
+    <button class="btn btn-danger btn-job" data-toggle="modal" data-target="#apply_sys_job">系统分配任务</button>
+
+    <!-- system job modal -->
+    <div class="modal fade" id="apply_sys_job">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">您<span class="text-red">没有权限</span>申请系统分配任务！</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    系统分配任务每周由<span class="text-red">管理员手动发放</span>，您在完成系统分配的所有任务后，可以点击下方的
+                    <mark>自由申请任务</mark>
+                    按钮来获取新的任务，有任何疑问请<a href="{% url 'about' %}">联系管理员</a>！
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- system job detail -->
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+        <tr>
+            <th>编号</th>
+            <th>进度</th>
+            <th>总薪酬</th>
+            <th>当前薪酬</th>
+            <th>发布日期</th>
+            <th>截止日期</th>
+            <th>
+                <span data-toggle="popover" data-html="true" data-trigger="hover" data-placement="top" title="任务状态说明"
+                      data-content="任务共三种状态，分别是<span class='text-red'>进行中、已完成和已支付<span>">
+                    状态
+                </span>
+            </th>
+            <th>完成日期</th>
+            <th>标注</th>
+        </tr>
+        <tbody>
+        {% for job, sys_annotated in sys_jobs %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ job.job_progress }} / {{ job.job_size }}</td>
+                <td>{{ job.reward | floatformat:2 }}</td>
+                <td>{{ job.reward_progress | floatformat:2 }}</td>
+                <td>{{ job.created | date:"m-d H:i" }}</td>
+                <td>{{ job.expired | date:"m-d H:i" }}</td>
+                <td>
+                    <mark>{{ job.get_status_display }}</mark>
+                </td>
+                <td>{{ job.finished | date:"m-d H:i" }}</td>
+                <td>
+                    <button class="btn btn-success" data-toggle="modal"
+                            data-target="#sys_job_{{ forloop.counter }}">
+                        开始标注
+                    </button>
+                </td>
+            </tr>
+
+            <!-- annotation entry modal -->
+            <div class="modal fade" id="sys_job_{{ forloop.counter }}">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                <mark>系统分配任务 {{ forloop.counter }}</mark>
+                                ：选择您要标注的<span
+                                    class="text-red">文章编号</span></h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <p>
+                                请点击文章序号开始标注，
+                                <mark>蓝色背景</mark>
+                                代表已标注的文章，点击已标注的文章将进入
+                                <mark>编辑模式</mark>
+                                。请<span class="text-red">优先完成</span>系统分配的任务！
+                            </p>
+                            <ul class="pagination pagination-sm justify-content-center">
+                                {% for annotated in sys_annotated %}
+                                    {% if annotated.is_annotated %}
+                                        <li class="page-item active">
+                                            <a class="page-link"
+                                               href="{% url 'am_annotate' annotated.job_id annotated.id %}">
+                                                {{ forloop.counter | stringformat:'02d' }}
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               href="{% url 'am_annotate' annotated.job_id annotated.id %}">
+                                                {{ forloop.counter | stringformat:'02d' }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- free job button -->
+    <button class="btn btn-primary btn-job" data-toggle="modal" data-target="#apply_free_job">自由申请任务</button>
+
+    <!-- free job modal -->
+    <div class="modal fade" id="apply_free_job">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <form role="form" method="post">
+                    {% csrf_token %}
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">请选择申请标注的文章数量</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <strong>请注意</strong>：您需要在<span class="text-red">一周之内</span>标注完成所申请的文章摘要，完成之后，您可以<span
+                            class="text-red">申请新的任务</span>。如果您逾期，则本次任务失效，已标注文章
+                        <mark>将不计入薪酬</mark>
+                        ，详细规则请参考<a
+                            href="{% url 'faq' %}">FAQ</a>。
+                        <div class="form-group">
+                            <label for="job_size"></label>
+                            <select name="job_size" class="form-control" required="" id="job_size">
+                                <option value="0">10篇</option>
+                                <option value="1">15篇</option>
+                                <option value="2">20篇</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-success">提交申请</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- free job detail -->
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+        <tr>
+            <th>编号</th>
+            <th>进度</th>
+            <th>总薪酬</th>
+            <th>当前薪酬</th>
+            <th>申请日期</th>
+            <th>截止日期</th>
+            <th>
+                <span data-toggle="popover" data-html="true" data-trigger="hover" data-placement="top" title="任务状态说明"
+                      data-content="任务共三种状态，分别是<span class='text-red'>进行中、已完成和已支付<span>">
+                    状态
+                </span>
+            </th>
+            <th>完成日期</th>
+            <th>标注</th>
+        </tr>
+        <tbody>
+        {% for job, free_annotated in free_jobs %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ job.job_progress }} / {{ job.job_size }}</td>
+                <td>{{ job.reward | floatformat:2 }}</td>
+                <td>{{ job.reward_progress | floatformat:2 }}</td>
+                <td>{{ job.created | date:"m-d H:i" }}</td>
+                <td>{{ job.expired | date:"m-d H:i" }}</td>
+                <td>
+                    <mark>{{ job.get_status_display }}</mark>
+                </td>
+                <td>{{ job.finished | date:"m-d H:i" }}</td>
+                <td>
+                    <button class="btn btn-success" data-toggle="modal"
+                            data-target="#free_job_{{ forloop.counter }}">
+                        开始标注
+                    </button>
+                </td>
+            </tr>
+
+            <!-- annotation entry modal -->
+            <div class="modal fade" id="free_job_{{ forloop.counter }}">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                <mark>自由申请任务 {{ forloop.counter }}</mark>
+                                ：选择您要标注的<span class="text-red">文章编号</span></h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <p>
+                                请点击文章序号开始标注，
+                                <mark>蓝色背景</mark>
+                                代表已标注的文章，点击已标注的文章将进入
+                                <mark>编辑模式</mark>
+                                。请<span class="text-red">优先完成</span>系统分配的任务！
+                            </p>
+                            <ul class="pagination pagination-sm justify-content-center">
+                                {% for annotated in free_annotated %}
+                                    {% if annotated.is_annotated %}
+                                        <li class="page-item active">
+                                            <a class="page-link"
+                                               href="{% url 'am_annotate' annotated.job_id annotated.id %}">
+                                                {{ forloop.counter | stringformat:'02d' }}
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               href="{% url 'am_annotate' annotated.job_id annotated.id %}">
+                                                {{ forloop.counter | stringformat:'02d' }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- message -->
+    {% if message %}
+        <div class="alert alert-warning alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+    {% endif %}
+
+{% endblock %}

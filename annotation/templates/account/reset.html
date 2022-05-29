@@ -1,0 +1,91 @@
+{% extends 'account.html' %}
+{% load static %}
+
+{% block title %}
+    Reset Password · FNLP-DISC Annotation Platform
+{% endblock %}
+
+{% block content %}
+
+    <style>
+        p.reset {
+            background: #c0fff3;
+            font-size: large;
+        }
+        p.reset_left {
+            text-align: left;
+        }
+
+        span.reset_info {
+            color: #a30029;
+        }
+
+        h2 {
+            font-weight: normal;
+        }
+    </style>
+
+    <div class="auth-form px-lg-1">
+        {% if is_valid %}
+            {% if updated %}
+                <p class="create-account-callout mt-3 reset">
+                    Your password has been <span class="reset_info">updated</span>,
+                    please login <a href="{% url 'login' %}">here</a>.
+                </p>
+                <p class="create-account-callout mt-3">
+                    New to here? <a href="{% url 'register' %}"> &nbsp;Create an account</a>.
+                </p>
+            {% else %}
+                <form action="" accept-charset="UTF-8" method="post">
+                    {% csrf_token %}
+                    <div class="auth-form-header p-1">
+                        <h2>Reset Password</h2>
+                    </div>
+                    {% if message %}
+                        <div id="js-flash-container">
+                            <div class="flash flash-full flash-error ">
+                                <div class="container-lg px-2">
+                                    <button class="flash-close js-flash-close" type="button"
+                                            aria-label="Dismiss this message">
+                                        <svg class="octicon octicon-x" viewBox="0 0 16 16" width="16" height="16"
+                                             aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                  d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"></path>
+                                        </svg>
+                                    </button>
+                                    {{ message }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="auth-form-body mt-2">
+                        <label for="id_password">New Password</label>
+                        <div class="form-group">
+                            {{ reset_form.password }}
+                        </div>
+                        <label for="id_repeated_password">Password confirmation</label>
+                        <div class="form-group">
+                            {{ reset_form.repeated_password }}
+                        </div>
+                        <input type="submit" name="commit" value="Reset password" tabindex="3"
+                               class="btn btn-primary btn-block"
+                               data-disable-with="Resetting password ..."/>
+                    </div>
+                    <p class="create-account-callout mt-3">
+                        Already have an account? <a href="{% url 'login' %}"> &nbsp;Login</a> here .
+                    </p>
+                </form>
+            {% endif %}
+        {% else %}
+            <p class="create-account-callout mt-3 reset reset_left">
+                The <span class="reset_info">password reset url</span> is invalid because one of the following reasons:
+                <br>&nbsp;&nbsp;1. you have successfully <span class="reset_info">reset</span> your password.
+                <br>&nbsp;&nbsp;2. it is expired due to a long period of inaction.
+            </p>
+            <p class="create-account-callout mt-3">
+                Forget password? Reset password <a href="{% url 'forget' %}"> here </a>.
+            </p>
+        {% endif %}
+    </div>
+
+{% endblock %}

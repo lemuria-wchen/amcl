@@ -1,0 +1,243 @@
+{% extends "am.html" %}
+{% load static %}
+
+{% block title %}
+    Tutorial · FNLP-DISC Annotation Platform
+{% endblock %}
+
+{% block content %}
+
+    <script src="{% static 'js/annotate.js' %}"></script>
+
+    <script>
+        window.onload = function () {
+            $('#tutorial').addClass('active');
+        }
+    </script>
+
+    <style>
+        p.table-title {
+            text-align: center;
+            margin: 1% 0 2% 0;
+        }
+
+        #argument_type {
+            margin: 3% 0 0 0;
+        }
+    </style>
+
+
+    <div class="card bg-light text-dark">
+
+        <div class="card-header">
+            标注教程（Annotation Tutorial）
+        </div>
+
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-first">
+                    <p class="card-text header">我们的标注的目标是什么？</p>
+                    <p class="card-text">我们
+                        <mark>第一阶段</mark>
+                        的目标在于对文献摘要进行自动化分析，即自动对文献摘要进行
+                        <mark>结构化分析</mark>
+                        ，主要包含两个步骤：一个是<span class="text-red">句子类别识别</span>，即识别每一句的
+                        <mark>类别</mark>
+                        ；另一个是<span class="text-red">句子关系识别</span>，即识别出句子之间可能存在的
+                        <mark>关系</mark>
+                        。
+                    </p>
+                    <p class="card-text">论文摘要是对论文的内容
+                        <mark>不加注释和评论的简短陈述</mark>
+                        ，要求扼要地说明研究工作的<span class="text-red">目的、方法、结果和结论</span>等， 我们可以将一篇文章的摘要看作是一个或若干个论点（<a
+                                href="https://en.wikipedia.org/wiki/Argument">Argument</a>），每句话都属于一个论点成分（Argument
+                        Component）， 则识别句子类型与关系可以被
+                        <mark>形式化地定义</mark>
+                        为论辩挖掘（<a href="https://en.wikipedia.org/wiki/Argument_mining">Argument Mining</a>）。
+                    </p>
+                </li>
+
+                <li class="list-group-item">
+                    <p class="card-text header">怎么标注句子类别？</p>
+                    <p class="card-text">论辩模型决定了标注模型（Annotation Schema），因此<span class="text-red">句子类别粒度</span>的粗细决定了标注的
+                        <mark>复杂度、难度与可行性</mark>
+                        ，常见的句子类别有<span class="text-red">背景、范围、目的、重要性、内容、方法、原理、条件、数据、结果、结论</span>等，
+                        将每个句子分为这么多类显然对标注员来说是能力与耐心巨大的考验，为了将控制句子类别的粒度，我们将一些类别进行合并，聚合成<span class="text-red"> 5 </span>个主要类别，
+                        如下表所示。
+                    </p>
+
+                    <table class="table table-bordered table-hover" id="argument_type">
+                        <thead>
+                        <tr>
+                            <th style="width: 10%;">类型</th>
+                            <th style="width: 30%;">范围</th>
+                            <th style="width: 40%;">例子</th>
+                            <th style="width: 20%;">详情</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                研究目的
+                            </td>
+                            <td class="segment">
+                                包含研究背景、范围、目的、重要性、任务等。
+                            </td>
+                            <td class="segment">
+                                <span>
+                                    <mark>目的</mark>：<span>这项荟萃分析的目的是评估间伐在干旱期间和干旱后改善树木性能的潜力。</span>
+                                </span>
+                            </td>
+                            <td class="segment">
+                                研究目的主要包含作者的研究动机。
+                            </td>
+                        </tr>
+{#                        <tr>#}
+{#                            <td class="text-red">背景结论</td>#}
+{#                            <td class="segment">#}
+{#                                包含已得出的结果或结论等。#}
+{#                            </td>#}
+{#                            <td class="segment">#}
+{#                                <span>#}
+{#                                    <mark>背景观点</mark>：<span>众所周知，人类活动很大程度上造成了全球变暖。</span>#}
+{#                                </span>#}
+{#                            </td>#}
+{#                            <td class="segment">#}
+{#                                一般用于引出研究问题，作者可能支持也有可能反对。#}
+{#                            </td>#}
+{#                        </tr>#}
+                        <tr>
+                            <td>
+                                研究方法
+                            </td>
+                            <td class="segment">
+                                包括研究内容、方法、原理、条件、程序、手段等。
+                            </td>
+                            <td class="segment">
+                                <span>
+                                    <mark>方法</mark>：<span>在树木生长前，我们使用了不同的碳同位素强度和树木生长的非思考的23个变量。</span>
+                                </span>
+                            </td>
+                            <td class="segment">
+                                研究方法主要包含作者实验的过程。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>研究结果</td>
+                            <td class="segment">
+                                包括通过调研、实验、观察取得的数据、结果和事实等。
+                            </td>
+                            <td class="segment">
+                                <span>
+                                    <mark>事实</mark>：<span>在针叶树中，所有处理都观察到与干旱相关的生长减少和水分利用效率的提高。</span>
+                                </span>
+                            </td>
+                            <td class="segment">
+                                研究结果一般只包含对数据、事实或结果的描述，不包含主观推测或判断。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>研究结论</td>
+                            <td class="segment">
+                                包含推测、结论、声明、观点、意义、价值、建议等。
+                            </td>
+                            <td class="segment">
+                                <span>
+                                    <mark>观点</mark>：<span>间伐有助于缓解干旱期间阔叶植物生长的减少，很可能是通过增加土壤水分的有效性。</span>
+                                </span>
+                            </td>
+                            <td class="segment">
+                                研究结论一般均带有作者或他人的主观意见或情绪。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>其他</td>
+                            <td class="segment">
+                                非上述类别的都为其他。
+                            </td>
+                            <td class="segment">
+                                <span>
+                                    <mark>版权</mark>：<span>(C) 2000爱思唯尔科技有限公司版权所有。</span>
+                                </span>
+                            </td>
+                            <td class="segment">
+                                除了版权信息以外，尽量不要将句子标注为其他类型。
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <p class="card-text table-title">Table 1: Argument Component Types</p>
+
+                    <p class="card-text">
+                        <strong>重要性排序</strong>：<span class="text-red">研究结论 > 研究结果 > 研究方法 > 研究目的 > 其他</span>（
+                        <mark>即当某个句子中包含一个或多个类型时，优先选择重要性较高的句子</mark>
+                        ）
+                    </p>
+
+                    <p class="card-text" style="margin: 0 0 1% 0;">
+                        <strong>注意事项：</strong>
+                    </p>
+
+                    <div class="container">
+                        <ul>
+                            <li>
+                                <span>如果作者在句子中引用了他人的研究结果，算做研究结果。</span>
+                            </li>
+                            <li>
+                                <span>如果作者在句子中引用了他人的观点，算做研究结论。</span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="list-group-item">
+                    <p class="card-text header">怎么标注句子关系？</p>
+                    <p class="card-text">
+                        句子之间的支持或反对的关系，一般都是 <span class="text-red">"研究结果"</span> 支持或反对 <span
+                            class="text-red">"研究结论"</span>，或者 <span class="text-red">"研究结论"</span> 支持或者反对 <span
+                            class="text-red">"研究结论"</span>， 我们标注的关系的目的在于，希望能
+                        <mark>理清作者提出他自己的主要观点的逻辑</mark>
+                        ，即<span class="text-red">我们希望找到作者是如何通过<mark>讲道理、摆事实</mark>等方式来阐明自己的观点、结论或者建议</span>，
+                        我们判断句子之间是否存在关系的
+                        <mark>要点</mark>
+                        在于，单独把这两个句子拎出来，看它们是否能够构成支持或反对关系。
+                    </p>
+                </li>
+
+                <li class="list-group-item">
+                    <p class="card-text header">例子</p>
+
+                    <ul class="pagination pagination-sm">
+                        <li class="page-item" style="margin: 0 1% 0 0">
+                            <a class="page-link" href="javascript:alert('正在制作中')"> 标注案例一</a>
+                        </li>
+                        <li class="page-item" style="margin: 0 1% 0 0">
+                            <a class="page-link" href="javascript:alert('正在制作中')"> 标注案例二</a>
+                        </li>
+                        <li class="page-item" style="margin: 0 1% 0 0">
+                            <a class="page-link" href="javascript:alert('正在制作中')"> 标注案例三</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="list-group-item">
+                    <p class="card-text header">视频教程</p>
+
+                    <ul class="pagination pagination-sm">
+                        <li class="page-item" style="margin: 0 1% 0 0">
+                            <a class="page-link" href="javascript:alert('正在制作中')"> 标注句子类型常见的错误</a>
+                        </li>
+                        <li class="page-item" style="margin: 0 1% 0 0">
+                            <a class="page-link" href="javascript:alert('正在制作中')"> 标注句子关系常见的错误</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-footer">
+            还是不清楚如何标注？请咨询<a href="{% url 'about' %}">管理员</a>。
+        </div>
+    </div>
+
+{% endblock %}

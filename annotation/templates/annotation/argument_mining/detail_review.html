@@ -1,0 +1,223 @@
+{% extends "am.html" %}
+{% load static %}
+
+{% block title %}
+    Annotation List - am · FNLP-DISC Annotation Platform
+{% endblock %}
+
+{% block content %}
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+
+    <script src="{% static 'js/annotate.js' %}"></script>
+
+    <script>
+        window.onload = function () {
+
+            let arg_type = {{ arg_type | safe }};
+            let arg_rel = {{ arg_rel | safe }};
+
+            let arg_type_ = {{ arg_type_ | safe }};
+            let arg_rel_ = {{ arg_rel_ | safe }};
+            let num_segments = {{ article.num_segments | safe }};
+            let user_names = {{ user_names | safe }};
+
+            $('.arg_type_1').each(function (index) {
+                $(this).html(insertArgumentType(arg_type[0][index], 'yes'));
+            });
+
+            $('.arg_type_2').each(function (index) {
+                $(this).html(insertArgumentType(arg_type[1][index], 'yes'));
+            });
+
+            $('.arg_type_3').each(function (index) {
+                $(this).html(insertArgumentType(arg_type[2][index], 'yes'));
+            });
+
+            <!-- argument type -->
+            $('.arg_type').each(function (index) {
+                $(this).html(insertArgumentType(arg_type_[index]));
+            });
+
+            <!-- argument rel -->
+            if (arg_rel_) {
+                arg_rel_.forEach(function (value) {
+                    $('#arg_rel').append(insertArgumentRelation(num_segments, value))
+                });
+            }
+
+            <!-- 绑定插入按钮 -->
+            $('#insert').bind('click', function () {
+                $('#arg_rel').append(
+                    insertArgumentRelation(num_segments)
+                );
+                $('select').selectpicker();
+            });
+
+            $('select').selectpicker();
+        }
+    </script>
+
+    <!-- meta -->
+    <div class="card bg-light text-dark">
+
+        <div class="card-header">
+            <a data-toggle="collapse" href="#meta">
+                <span data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                      title="<em>文章标题</em">{{ article.title_template }}</span>
+            </a>
+        </div>
+
+        <div id="meta" class="panel-collapse collapse show">
+            <div class="card-body">
+                <p class="card-text">
+                    <strong data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                            title="<em>作者列表（显示前 5个）</em">Author: </strong> {{ article.author_template }}
+                </p>
+                <p class="card-text">
+                    <strong data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                            title="<em>数字对象唯一标识符<a href='https://en.wikipedia.org/wiki/Digital_object_identifier'> doi </a></em>">DOI: </strong> {{ article.doi }}
+                </p>
+                <p class="card-text">
+                    <strong data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                            title="<em>原文摘要</em>">Abstract: </strong>
+{#                    {% for sentence in article.get_sentences %}#}
+{#                        {{ sentence }}#}
+{#                        <a href="#Segment_{{ forloop.counter }}"><sup>[{{ forloop.counter }}]</sup></a>&nbsp;#}
+{#                    {% endfor %}#}
+                    {{ article.abstract }}
+                </p>
+                <p class="card-text">
+                    <strong data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                            title="<em>摘要中文翻译，基于 <a href='https://api.fanyi.baidu.com/'><u>百度翻译开放平台</u></a></em>">摘要: </strong>
+                    {{ article.transl_abstract }}
+                </p>
+                {% if article.keyword_template %}
+                    <p class="card-text">
+                        <strong data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                                title="<em>关键词列表</em>">Keyword: </strong> {{ article.keyword_template }}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <strong data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                    title="<em>期刊名称与发表年份</em>">{{ article.journal_template }}</strong>
+        </div>
+    </div>
+
+    <!-- price -->
+    <table class="table table-bordered" id="price">
+        <thead class="table-dark">
+        <tr>
+            <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="left"
+                title="<em>数据库中文章的编号，文章标识符</em>">
+                文章编号
+            </th>
+            <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top"
+                title="<em>句子个数乘以 0.6 元</em>">审核价格
+            </th>
+            <th data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="top"
+                title="<em>该建议时间为熟悉审核后的时间，需要较高的审核熟练度</em>">建议审核时间
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ article.id }} </td>
+            <td>{{ article.get_review_price | floatformat:2 }} 元</td>
+            <td>{{ article.get_review_time | floatformat:2 }} 分钟</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form action="" accept-charset="UTF-8" method="post">
+        {% csrf_token %}
+
+        <!-- task 1: argument type -->
+        <h5 class="page-header">
+            任务一：句子类型识别
+        </h5>
+
+        <button class="btn btn-primary" type="button" id="transl_sent" data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="right" title="<em>翻译所有的句子</em>">Translate</button>
+
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+            <tr>
+                <th style="width: 5%;"> ID</th>
+                <th style="width: 55%;"> Segment</th>
+                <th style="width: 10%;"> {{ user_names.0 }}</th>
+                <th style="width: 10%;"> {{ user_names.1 }}</th>
+                <th style="width: 10%;"> {{ user_names.2 }}</th>
+                <th style="width: 10%;"> Label</th>
+            </tr>
+            </thead>
+            <tbody id="arg_type">
+            {% for sentence, transl_sentence in article.sentences_template %}
+                <tr id="Segment_{{ forloop.counter }}">
+                    <td>{{ forloop.counter }}</td>
+                    <td class="segment">
+                        <span class="sent">{{ sentence }}</span>
+                        <span><br><br>{{ transl_sentence }}</span>
+                    </td>
+                    <td class="arg_type_1"></td>
+                    <td class="arg_type_2"></td>
+                    <td class="arg_type_3"></td>
+                    <td class="arg_type"></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- task 2: argument relation -->
+        <h5 class="page-header">
+            任务二：句子关系识别
+        </h5>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th> Segment ID</th>
+                <th> Relation</th>
+                <th> Segment ID</th>
+                <th> User</th>
+            </tr>
+            </thead>
+            <tbody id="arg_rel_label">
+            {% for r in result %}
+                <tr>
+                    <td> {{ r.0 }}</td>
+                    <td> {{ r.1 }}</td>
+                    <td> {{ r.2 }}</td>
+                    <td> {{ r.3 }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <button id="insert" class="btn btn-primary" type="button" style="margin: 2% 0 0 0;">插入句子关系</button>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th> Segment ID</th>
+                <th> Relation</th>
+                <th> Segment ID</th>
+                <th> Operation</th>
+            </tr>
+            </thead>
+            <tbody id="arg_rel">
+            </tbody>
+        </table>
+
+        <div style="text-align: center; vertical-align: middle; margin: 5% 0 10% 0;">
+            <input type="submit" value="提交审核" tabindex="3" class="btn btn-success btn-lg" id="submit"
+                   data-disable-with="提交审核中 ..."/>
+        </div>
+    </form>
+
+{% endblock %}

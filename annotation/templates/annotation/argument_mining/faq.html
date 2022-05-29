@@ -1,0 +1,126 @@
+{% extends "am.html" %}
+{% load static %}
+
+{% block title %}
+    FAQ
+{% endblock %}
+
+{% block content %}
+
+    <style>
+        p.card-text {
+            text-indent: 0.5cm;
+        }
+
+        p.header {
+            font-size: larger;
+            text-indent: 0;
+        }
+    </style>
+
+    <script>
+        window.onload = function () {
+            $('#faq').addClass('active');
+        }
+    </script>
+
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <div class="card bg-light text-dark">
+
+        <div class="card-header">
+            常见问题解答（FAQ）
+        </div>
+
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <p class="card-text header">完整的标注流程是怎样的？</p>
+                    <p class="card-text">1. 管理员通常在<span class="text-red">特定时间点</span>（一般为每周一或周二）发布任务，系统将按照一定的概率算法给每个标注员从数据库中分配<span
+                            class="text-red"> 20 </span>篇文章摘要，并在<a href="{% url 'about' %}">微信讨论群</a>中以群公告的形式进行通知。</p>
+                    <p class="card-text">2. 标注员在任务发布后的<span class="text-red">一周之内</span>必须完成被分配的任务，如果<span
+                            class="text-red">未在规定时间内完成</span>，则本轮任务无效，将<span class="text-red">不计入薪酬结算</span>。</p>
+                    <p class="card-text">3. 每周发布新任务之前，将由
+                        <mark>审核人员</mark>
+                        对上周的标注结果进行审核，审核对象为标注结果出现争议较大的文章（即 <span class="text-red">Agreement</span>
+                        低于一定阈值）。若某个标注员所标注的文章中，超过 50% 的文章标注争议较大，则该标注员将被进一步进行审核，并可能<span class="text-red">丧失标注资格</span>。
+                    </p>
+                    <p class="card-text">4. 标注任务进行到 1 到 2 周后，管理员将针对<span class="text-red">争议较大</span>的文章摘要组织线上的<span
+                            class="text-red">标注培训会议</span>。</p>
+                    <p class="card-text">5. 标注任务进行到 1 到 2 周后，
+                        <mark data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="bottom"
+                              title="<em>综合标注准确率和反馈积极性</em">表现优异
+                        </mark>
+                        的同学将获取自由<span class="text-red"><a>申请新任务</a></span>的权限。
+                    </p>
+                </li>
+
+                <li class="list-group-item">
+                    <p class="card-text header">标注员如何计算薪酬并应该遵守什么规则？</p>
+                    <p class="card-text">1. 系统根据<a href="http://www.nltk.org/api/nltk.tokenize.html">分句算法</a>对摘要进行分句并计算句子个数
+                        \(num\_segments\)，则该篇摘要的酬金为 &yen; \(0.15 \times num\_segments\)，如一篇被分成 10 句话的摘要的薪酬为 1.5 元。</p>
+                    <p class="card-text">2. 标注员应<span class="text-red">优先完成系统发放的任务</span>，若未及时完成任务，则该任务可获取的薪酬将为<span
+                            class="text-red"> 0 </span>元，并且已标注的结果将从系统数据库中<span class="text-red">删除</span>。</p>
+                    <p class="card-text">3. 有申请新任务权限的标注员，在完成系统发放的任务后，可以申请新任务，新任务将遵循相同的<span class="text-red">分配算法</span>和<span
+                            class="text-red">标注规则</span>，标注员将需要在申请新任务后的一周内，完成所申请的任务。</p>
+                    <p class="card-text">4. 未按时完成<span class="text-red">系统发放</span>或者<span class="text-red">自由申请</span>的任务
+                        <span class="text-red">3</span> 次及以上的标注员，将<span class="text-red">失去继续标注的权限</span>。</p>
+                    <p class="card-text">5. 标注员每标注完<span class="text-red"> 100 </span>篇文章可以额外获得<span class="text-red"> 50～100</span>元薪酬，审核人员将根据<span
+                            class="text-red">标注准确率</span>来确定额外薪酬的具体数额， 如果准确率过低，则<span
+                            class="text-red">无法获得奖励</span>。<sup><span class="text-red">new</span></sup></p>
+                </li>
+
+                <li class="list-group-item">
+                    <p class="card-text header">审核人员如何计算标注准确率？<sup><span class="text-red">new</span></sup></p>
+                    <p class="card-text">审核人员将对 agreement 低于一定阈值的摘要进行审核，并标注出正确答案，通过与标注者的答案进行对比即可计算标注准确率（非全样本计算），标注者可以在<a
+                            href="{% url 'home' %}"> 个人主页 </a>上查看审核人员的审核结果。</p>
+                </li>
+
+                <li class="list-group-item">
+                    <p class="card-text header">如何看到审核人员的标准答案？<sup><span class="text-red">new</span></sup></p>
+                    <p class="card-text">
+                        在<a href="{% url 'home' %}">个人主页</a>中，如果您标注的结果与审核人员的答案之间差别较大，会有
+                        <mark data-toggle="tooltip" data-html="true" data-trigger="hover" data-placement="bottom"
+                              title="<em>将在近期更新</em">提示信息
+                        </mark>
+                        。
+                    </p>
+                </li>
+
+                <li class="list-group-item">
+                    <p class="card-text header">系统是如何给标注员分配任务的？</p>
+                    <p class="card-text">1. 每篇摘要的标注将由 <span class="text-red">3 </span>个人独立完成，因此已被标注至少一次的摘要将被<span
+                            class="text-red">优先分配</span>，直到该摘要已达到所需标注次数。</p>
+                    <p class="card-text">2. 一般摘要越长，则标注难度越高，因此<span class="text-red">较短的摘要</span>在标注前期阶段将被优先分配。</p>
+                    <p class="card-text">3. 标注员<span class="text-red">不会被重复分配</span>到已标注过的文章。</p>
+                </li>
+
+                <li class="list-group-item">
+                    <p class="card-text header">有标注的教程吗？</p>
+                    <p class="card-text">如果您在标注的过程中碰到了任何困难，请查看<a href="{% url 'tutorial' %}"> 标注教程 </a>。</p>
+                </li>
+
+                <li class="list-group-item">
+                    <p class="card-text header">Agreement 是如何计算的？</p>
+                    <p class="card-text">假设有 n 个人同时对一篇摘要进行标注，则每个人的标注结果可能都会差别，agreement 是为了衡量这种差别的大小，我们使用 <span
+                            class="text-red"><a
+                            href="https://en.wikipedia.org/wiki/Cohen%27s_kappa">Cohen's Kappa</a></span> 系数来计算
+                        agreement。</p>
+                </li>
+
+                <li class="list-group-item">
+                    <p class="card-text header">一个人最多可以标注多少篇文章摘要？</p>
+                    <p class="card-text">假设系统中<span class="text-red">只有一个标注员</span>在标注，那么他最多可以标注完文献库中的所有的<span
+                            class="text-red"> 2,000 </span>篇文章，因此系统将至少需要<span class="text-red"> 3 </span>个人才能完成所需的<span
+                            class="text-red"> 6,000 </span>次标注。</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-footer">
+            仍有问题？请询问<a href="{% url 'about' %}">管理员</a>。
+        </div>
+    </div>
+
+{% endblock %}
+

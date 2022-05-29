@@ -1,0 +1,66 @@
+{% extends 'account.html' %}
+{% load static %}
+
+{% block title %}
+    Forget password · FNLP-DISC Annotation Platform
+{% endblock %}
+
+{% block content %}
+
+    <style>
+        p.forget {
+            background: #c0fff3;
+            font-size: large;
+        }
+
+        span.forget_info {
+            color: #a30029
+        }
+    </style>
+
+    <div class="auth-form px-lg-1">
+        {% if is_sent %}
+            <p class="create-account-callout mt-3 forget">
+                The <span class="forget_info">password reset url</span> has been sent to your email address. Login
+                your email <a href="http://mail.fudan.edu.cn/" target="_blank">here</a>.
+            </p>
+        {% else %}
+            <form action="" accept-charset="UTF-8" method="post">
+                {% csrf_token %}
+                <div class="auth-form-header p-1">
+                    <h2 style="font-weight: normal">Reset Password</h2>
+                </div>
+                {% if message %}
+                    <div id="js-flash-container">
+                        <div class="flash flash-full flash-error ">
+                            <div class="container-lg px-2">
+                                <button class="flash-close js-flash-close" type="button"
+                                        aria-label="Dismiss this message">
+                                    <svg class="octicon octicon-x" viewBox="0 0 16 16" width="16" height="16"
+                                         aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                              d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"></path>
+                                    </svg>
+                                </button>
+                                {{ message }}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="auth-form-body mt-2">
+                    <label for="id_email">Email address</label>
+                    <div class="form-group">
+                        {{ forget_form.email }}
+                    </div>
+                    <input type="submit" name="commit" value="Send email" tabindex="3" class="btn btn-primary btn-block"
+                           data-disable-with="Sending email…"/>
+                </div>
+            </form>
+        {% endif %}
+
+        <p class="create-account-callout mt-3">
+            Already have an account? <a href="{% url 'login' %}"> &nbsp;Login</a> here .
+        </p>
+    </div>
+
+{% endblock %}
