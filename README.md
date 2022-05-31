@@ -1,6 +1,6 @@
 ## A Literature Abstract Annotation Tool for Argumentation Mining
 
-In this repository, we share a literature abstract annotation tool for argumentation mining. It is also the annotation web tool mentioned in the paper "A Structure-Aware Argument Encoder for Literature Discourse Analysis". You can watch a tutorial on how to use the tool at [[link](https://www.youtube.com/watch?v=xILPAn5EZH4)](https://www.youtube.com/watch?v=xILPAn5EZH4).
+In this repository, we share a literature abstract annotation tool for argumentation mining. It is also the annotation web tool mentioned in the paper "A Structure-Aware Argument Encoder for Literature Discourse Analysis". You can watch a tutorial on how to use the tool at [https://www.youtube.com/watch?v=xILPAn5EZH4](https://www.youtube.com/watch?v=xILPAn5EZH4).
 
 The tool is a complete annotation suite based on [Django](https://www.djangoproject.com/) that includes the following features. 
 
