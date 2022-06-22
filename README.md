@@ -1,6 +1,6 @@
 ## A Literature Abstract Annotation Tool for Argumentation Mining
 
-In this repository, we share a literature abstract annotation tool for argumentation mining. It is also the annotation web tool mentioned in the paper "A Structure-Aware Argument Encoder for Literature Discourse Analysis". You can watch a tutorial on how to use the tool at [https://www.youtube.com/watch?v=xILPAn5EZH4](https://www.youtube.com/watch?v=xILPAn5EZH4).
+In this repository, we share a literature abstract annotation tool for argumentation mining. It is also the annotation web tool mentioned in the paper "A Structure-Aware Argument Encoder for Literature Discourse Analysis". . You can watch a tutorial on how to use the tool at [https://www.youtube.com/watch?v=xILPAn5EZH4](https://www.youtube.com/watch?v=xILPAn5EZH4).    
 
 The tool is a complete annotation suite based on [Django](https://www.djangoproject.com/) that includes the following features. 
 
@@ -120,7 +120,9 @@ from annotation.utils.job import assign
 assign(uid=1, job_size=10, job_type=0)
 ```
 
-We provide a service website for testing, which host on http://10.192.9.84:20026/annotation/, where the username and password are both `test1`. For some reasons, this website can only be accessed through Fudan University's intranet. 
+We provide a service website for testing, which host on http://210.16.187.147:60026/amcl/. We created two new users, annotator and reviewer, where the username and password are both `annotator` or `reviewer`.
+
+For some reasons, this website can only be accessed through Fudan University's intranet. 
 
 ### How to Cite
 
