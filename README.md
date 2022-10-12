@@ -153,4 +153,4 @@ If you extend or use this work, please cite the [paper](https://aclanthology.org
 
 ### Get Data
 
-In our paper, we introduce a new argumentation mining corpus that focuses on the field of climate change, which we will host in a new repository, and the corresponding code will be also released.
+In our paper, we introduce a new argumentation mining corpus that focuses on the field of climate change, which we host in our [new repository](https://github.com/lemuria-wchen/SAE).
