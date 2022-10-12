@@ -1,6 +1,6 @@
 ## A Literature Abstract Annotation Tool for Argumentation Mining
 
-In this repository, we share a literature abstract annotation tool for argumentation mining. It is also the annotation web tool mentioned in the paper "A Structure-Aware Argument Encoder for Literature Discourse Analysis". . You can watch a tutorial on how to use the tool at [https://www.youtube.com/watch?v=xILPAn5EZH4](https://www.youtube.com/watch?v=xILPAn5EZH4).    
+In this repository, we share a literature abstract annotation tool for argumentation mining. It is also the annotation web tool mentioned in the paper "[A Structure-Aware Argument Encoder for Literature Discourse Analysis](https://aclanthology.org/2022.coling-1.619/)". . You can watch a tutorial on how to use the tool at [https://www.youtube.com/watch?v=xILPAn5EZH4](https://www.youtube.com/watch?v=xILPAn5EZH4).    
 
 The tool is a complete annotation suite based on [Django](https://www.djangoproject.com/) that includes the following features. 
 
@@ -126,9 +126,30 @@ For some reasons, this website can only be accessed through Fudan University's i
 
 ### How to Cite
 
-If you extend or use this work, please cite the paper where it was introduced. 
+If you extend or use this work, please cite the [paper](https://aclanthology.org/2022.coling-1.619/) where it was introduced. 
 
-**Note**: We will release the paper "A Structure-Aware Argument Encoder for Literature Discourse Analysis" on arxiv soon.
+```
+@inproceedings{li-etal-2022-structure,
+    title = "A Structure-Aware Argument Encoder for Literature Discourse Analysis",
+    author = "Li, Yinzi  and
+      Chen, Wei  and
+      Wei, Zhongyu  and
+      Huang, Yujun  and
+      Wang, Chujun  and
+      Wang, Siyuan  and
+      Zhang, Qi  and
+      Huang, Xuanjing  and
+      Wu, Libo",
+    booktitle = "Proceedings of the 29th International Conference on Computational Linguistics",
+    month = oct,
+    year = "2022",
+    address = "Gyeongju, Republic of Korea",
+    publisher = "International Committee on Computational Linguistics",
+    url = "https://aclanthology.org/2022.coling-1.619",
+    pages = "7093--7098",
+    abstract = "Existing research for argument representation learning mainly treats tokens in the sentence equally and ignores the implied structure information of argumentative context. In this paper, we propose to separate tokens into two groups, namely framing tokens and topic ones, to capture structural information of arguments. In addition, we consider high-level structure by incorporating paragraph-level position information. A novel structure-aware argument encoder is proposed for literature discourse analysis. Experimental results on both a self-constructed corpus and a public corpus show the effectiveness of our model. Resources are available at https://github.com/lemuria-wchen/SAE.",
+}
+```
 
 ### Get Data
 
